@@ -56,7 +56,7 @@ export class ChatsUsersTable{
     /** Получение всех юзеров в чате по айди чата */
     getUsersInChat = (chatId: number, cb: (error: Error | null, rows: Array<IUser>) => void) => {
         const sql = `
-            SELECT Users.*
+            SELECT Users.*, strftime('%d.%m.%Y', Users.birthday) as birthday
             FROM Users
             INNER JOIN UsersChats ON Users.id = UsersChats.userId
             WHERE UsersChats.chatId = ?;
