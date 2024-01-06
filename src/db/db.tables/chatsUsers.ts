@@ -41,13 +41,13 @@ export class ChatsUsersTable{
         this.database.run(sql, [userId, chatId]);
     }
 
-    /** Получение всех чатов пользователя где есть бот */
+    /** Получение всех чатов пользователя где есть бот для поздравления */
     getAllUserChats = (userId: number, cb: (error: Error | null, rows: Array<IChat>) => void) => {
         const sql = `
             SELECT Chats.*
             FROM UsersChats
-            JOIN Chats ON Chats.id = UsersChats.chatId
-            WHERE UsersChats.userId = ?;
+            JOIN Chats ON Chats.id = UsersChats.chatId 
+            WHERE UsersChats.userId = ? AND Chats.timeToSend < strftime('%H:%M', TIME('now', '+3 hours'));
         `;
 
         this.database.all(sql, [userId], cb);

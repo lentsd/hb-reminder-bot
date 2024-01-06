@@ -202,13 +202,7 @@ function congratulateUsers() {
   });
 }
 
+// Каждые 10 минут проверяем есть ли у кого др и поздравляем
 scheduleJob('*/10 * * * *', () => {
   congratulateUsers();
 })
-
-// db.run('ALTER TABLE UsersChats ADD last_congratulation DATE NULL;')
-
-
-// db.run('DROP TABLE Chats;')
-// db.run('DELETE FROM Users;')
-// db.run('DELETE FROM UsersChats;')
