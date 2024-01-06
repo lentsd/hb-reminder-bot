@@ -77,7 +77,7 @@ bot.onText(/\/set_birthday/, async (msg) => {
       chatsUsersTable.addUserChatRelation(insertedId, chatId);
     });
 
-    bot.sendMessage(chatId, '🫡');
+    bot.sendMessage(chatId, 'Пользователь добавлен / обновлен 🫡');
     bot.removeReplyListener(replyListenerId);
   })
 });
@@ -149,7 +149,7 @@ bot.onText(/\/set_template/, async (msg) => {
         return console.log('Error while setting template' + err)
       }
 
-      bot.sendMessage(chatId, '🫡');
+      bot.sendMessage(chatId, 'Шаблон установлен 🫡');
       bot.removeReplyListener(replyListenerId);
     })
   })
@@ -179,7 +179,7 @@ bot.onText(/\/set_time/, async (msg) => {
         return console.log('Error while setting time' + err)
       }
 
-      bot.sendMessage(chatId, '🫡');
+      bot.sendMessage(chatId, 'Время установлено 🫡');
       bot.removeReplyListener(replyListenerId);
     })
   })
@@ -206,3 +206,5 @@ function congratulateUsers() {
 scheduleJob('*/10 * * * *', () => {
   congratulateUsers();
 })
+
+// Тестовый коммит
