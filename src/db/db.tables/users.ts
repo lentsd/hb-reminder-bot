@@ -31,7 +31,7 @@ export class UsersTable{
         });
     }
 
-    addUser = (nickname: string, birthday: string, cb?: (insertedId: number) => void) => {
+    addUser(nickname: string, birthday: string, cb?: (insertedId: number) => void) {
         const sql = 'INSERT OR REPLACE INTO Users (nickname, birthday) VALUES (?, ?)';
 
         this.database.run(sql, [nickname, birthday], function(err) {

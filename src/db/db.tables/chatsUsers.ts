@@ -35,14 +35,14 @@ export class ChatsUsersTable{
         });
     }
 
-    addUserChatRelation = (userId: number, chatId: number) => {
+    addUserChatRelation(userId: number, chatId: number) {
         const sql = 'INSERT OR IGNORE INTO UsersChats (userId, chatId) VALUES (?, ?);';
 
         this.database.run(sql, [userId, chatId]);
     }
 
     /** Получение всех чатов пользователя где есть бот для поздравления */
-    getAllUserChats = (userId: number, cb: (error: Error | null, rows: Array<IChat>) => void) => {
+    getAllUserChats(userId: number, cb: (error: Error | null, rows: Array<IChat>) => void) {
         const sql = `
             SELECT Chats.*
             FROM UsersChats
@@ -54,7 +54,7 @@ export class ChatsUsersTable{
     }
 
     /** Получение всех юзеров в чате по айди чата */
-    getUsersInChat = (chatId: number, cb: (error: Error | null, rows: Array<IUser>) => void) => {
+    getUsersInChat(chatId: number, cb: (error: Error | null, rows: Array<IUser>) => void) {
         const sql = `
             SELECT Users.*, strftime('%d.%m.%Y', Users.birthday) as birthday
             FROM Users

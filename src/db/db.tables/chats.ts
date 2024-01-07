@@ -1,3 +1,4 @@
+// Строчка от жены, удалить не могу 👇🏼
 // lublu tebya cilno ochen);
 
 import { Database } from "sqlite3";
@@ -12,7 +13,7 @@ export interface IChat{
 export class ChatsTable{
     database: Database;
 
-    constructor(database: Database){
+    constructor(database: Database) {
         if (!database) {
             throw new Error('Can\'t initialize a table without database instance');
         }
@@ -34,21 +35,21 @@ export class ChatsTable{
     }
 
     /** Добавление нового чата */
-    addChat = (chatId: number, cb?: (err: Error | null) => void) => {
+    addChat(chatId: number, cb?: (err: Error | null) => void) {
         const sql = 'INSERT INTO Chats (id) VALUES (?);';
     
         this.database.run(sql, [chatId], cb);
     }
 
-    /** Возращает конфиг чата */
-    getChatConfig = (chatId: number, cb?: (err: Error | null, row: Pick<IChat, 'template' | 'timeToSend'>) => void) => {
+    /** Возвращает конфиг чата */
+    getChatConfig(chatId: number, cb?: (err: Error | null, row: Pick<IChat, 'template' | 'timeToSend'>) => void) {
         const sql = 'SELECT template, timeToSend FROM Chats where id = ?;';
     
         this.database.get<Pick<IChat, 'template' | 'timeToSend'>>(sql, [chatId], cb)
     }
 
     /** Устанавливает время отправки поздравления в чате. */
-    setChatTimeToSend = (chatId: number, timeToSend: string, cb?: (err: Error | null) => void) => {
+    setChatTimeToSend(chatId: number, timeToSend: string, cb?: (err: Error | null) => void) {
         const sql = `
         UPDATE Chats
         SET timeToSend = ?
@@ -58,7 +59,7 @@ export class ChatsTable{
     }
 
     /** Устанавливает шаблон поздравления в чате. */
-    setChatTemplate = (chatId: number, template: string, cb?: (err: Error | null) => void) => {
+    setChatTemplate(chatId: number, template: string, cb?: (err: Error | null) => void) {
         const sql = `
         UPDATE Chats
         SET template = ?
@@ -66,16 +67,4 @@ export class ChatsTable{
         
         this.database.run(sql, [template, chatId], cb);
     }
-
-    /** Возвращает все чаты у которых время оправки сообщения меньше переданного. */
-    selectChatsWithPassedTime = (time: string) => {
-        const sql = `
-        SELECT *
-        FROM Chats
-        WHERE timeToSend <= strftime('%H:%M', ?);`;
-    
-        this.database.all(sql, [time], (err, data) => {
-            console.log(data);
-        })
-    };
 }
