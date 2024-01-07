@@ -35,8 +35,20 @@ const chatsUsersTable = new ChatsUsersTable(db);
 
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
 
+function checkIsPrivateChat(msg: TelegramBot.Message) {
+  if (msg.chat.type === 'private') {
+    bot.sendMessage(msg.chat.id, 'На данный момент бот работает только в групповых чатах. Добавьте меня в беседу с вашими друзьями и я буду напоминать, когда случится день рождения 🎉');
+
+    return true;
+  }
+}
+
 // Регистрация чата в БД
 bot.onText(/\/start/, (msg) => {
+  if (checkIsPrivateChat(msg)) {
+    return;
+  }
+
   const chatId = msg.chat.id;
 
   chatsTable.addChat(chatId, (err) => {
@@ -52,6 +64,11 @@ bot.onText(/\/start/, (msg) => {
 
 // Добавление дней рождений
 bot.onText(/\/set_birthday/, async (msg) => {
+  if (checkIsPrivateChat(msg)) {
+    return;
+  }
+
+
   const chatId = msg.chat.id;
   const message = await bot.sendMessage(chatId, `В ответ на это сообщение отправьте текст такого формата:
 
@@ -84,6 +101,10 @@ bot.onText(/\/set_birthday/, async (msg) => {
 
 // Получить все др в чате
 bot.onText(/\/get_birthdays/, (msg) => {
+  if (checkIsPrivateChat(msg)) {
+    return;
+  }
+
   const chatId = msg.chat.id;
 
   chatsUsersTable.getUsersInChat(chatId, (error, rows) => {
@@ -110,6 +131,10 @@ bot.onText(/\/ping/, (msg) => {
 
 // Отправляет конфиг чата
 bot.onText(/\/get_chat_config/, (msg) => {
+  if (checkIsPrivateChat(msg)) {
+    return;
+  }
+
   const chatId = msg.chat.id;
 
   chatsTable.getChatConfig(chatId, (err, row) => {
@@ -131,6 +156,10 @@ ${row.timeToSend}`,
 
 // Устанавливет шаблон поздравления
 bot.onText(/\/set_template/, async (msg) => {
+  if (checkIsPrivateChat(msg)) {
+    return;
+  }
+
   const chatId = msg.chat.id;
 
   const { message_id } = await bot.sendMessage(chatId, `В ответ на это сообщение отправьте шаблон такого формата:
@@ -157,6 +186,10 @@ bot.onText(/\/set_template/, async (msg) => {
 
 // Устанавливет время поздравления
 bot.onText(/\/set_time/, async (msg) => {
+  if (checkIsPrivateChat(msg)) {
+    return;
+  }
+
   const chatId = msg.chat.id;
 
   const { message_id } = await bot.sendMessage(chatId, `В ответ на это сообщение отправьте время для поздравления такого формата:
