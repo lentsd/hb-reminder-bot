@@ -61,7 +61,7 @@ export class Bot {
                 if (err && dbErrorChecker.isAlreadyExist(err.message)) {
                     this.telegramBot.sendMessage(chatId, BotMessages.ALREADY_REGISTERED_CHAT);
                 } else {
-                    this.telegramBot.sendMessage(chatId, BotMessages.ALREADY_REGISTERED_CHAT);
+                    this.telegramBot.sendMessage(chatId, BotMessages.SUCCESS_REGISTRATION);
                 }
             });
         });
