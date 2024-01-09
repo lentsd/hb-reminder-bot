@@ -10,7 +10,7 @@ jobs:
       - name: Build and restart bot on remote server
         uses: garygrossgarten/github-action-ssh@release
         with:
-          command: cd hb-reminder-bot && git pull && npm run build
+          command: cd hb-reminder-bot && git pull && npm run build && pm2 restart 0
           host: ${{ secrets.HOST }}
           username: root
           password: ${{ secrets.password }}
