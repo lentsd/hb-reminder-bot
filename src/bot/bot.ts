@@ -92,6 +92,10 @@ export class Bot {
             const chatId = msg.chat.id;
         
             this.tables.chatsUsersTable.getUsersInChat(chatId, (error, rows) => {
+                if (rows.length < 1) {
+                    this.telegramBot.sendMessage(chatId, BotMessages.EMPTY_USERS_LIST);
+                }
+
                 const users = rows.reduce((acc, cur) => {
                     acc += `${cur.nickname} - ${cur.birthday}\n`;
             
