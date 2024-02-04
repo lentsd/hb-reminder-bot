@@ -97,12 +97,13 @@ export class Bot {
                     this.telegramBot.sendMessage(chatId, BotMessages.EMPTY_USERS_LIST);
                 }
 
-                const today = date.format(new Date(), 'MM.DD')
-
                 let isUpcomingBirthdayMarked = false;
 
+                const today = date.format(new Date(), 'MM.DD');
+
                 const users = rows.reduce((acc, cur) => {
-                    const isNeedToMarkUpcoming = date.format(new Date(cur.birthday), 'MM.DD') >= today;
+                    const userBirthdayFormatted = date.format(date.parse(cur.birthday, 'DD.MM.YYYY'), 'MM.DD');
+                    const isNeedToMarkUpcoming = userBirthdayFormatted >= today;
 
                     acc += `${cur.nickname} - ${cur.birthday} ${(!isUpcomingBirthdayMarked && isNeedToMarkUpcoming) ? '👈🏼 скоро' : ''}\n`;
 
