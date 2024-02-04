@@ -5,6 +5,7 @@ import { UsersTable } from "../db/db.tables/users";
 import { ChatsUsersTable } from "../db/db.tables/chatsUsers";
 import { DbErrorChecker } from '../db/db.utils/dbErrorChecker';
 import { convertDate } from "../db/db.utils/convertDate";
+import date from 'date-and-time';
 
 const dbErrorChecker = new DbErrorChecker();
 
@@ -96,8 +97,18 @@ export class Bot {
                     this.telegramBot.sendMessage(chatId, BotMessages.EMPTY_USERS_LIST);
                 }
 
+                const today = date.format(new Date(), 'MM.DD')
+
+                let isUpcomingBirthdayMarked = false;
+
                 const users = rows.reduce((acc, cur) => {
-                    acc += `${cur.nickname} - ${cur.birthday}\n`;
+                    const isNeedToMarkUpcoming = date.format(new Date(cur.birthday), 'MM.DD') >= today;
+
+                    acc += `${cur.nickname} - ${cur.birthday} ${(!isUpcomingBirthdayMarked && isNeedToMarkUpcoming) ? '👈🏼 скоро' : ''}\n`;
+
+                    if (isNeedToMarkUpcoming) {
+                        isUpcomingBirthdayMarked = true;
+                    }
             
                     return acc;
                 }, '')
@@ -120,7 +131,7 @@ export class Bot {
             const { message_id } = message;
           
             const replyListenerId = this.telegramBot.onReplyToMessage(chatId, message_id, (msg) => {
-              if(!msg.text) {
+              if (!msg.text) {
                 return;
               }
           

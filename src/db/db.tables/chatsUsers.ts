@@ -24,8 +24,8 @@ export class ChatsUsersTable{
             chatId INTEGER,
             last_congratulation DATE NULL,
             PRIMARY KEY (userId, chatId),
-            FOREIGN KEY (userId) REFERENCES Users(id) ON DELETE CASCADE,
-            FOREIGN KEY (chatId) REFERENCES Chats(chatId) ON DELETE CASCADE
+            FOREIGN KEY (userId) REFERENCES Users(id),
+            FOREIGN KEY (chatId) REFERENCES Chats(id)
         );`;
     
         database.run(sql, (err) => {
@@ -59,7 +59,8 @@ export class ChatsUsersTable{
             SELECT Users.*, strftime('%d.%m.%Y', Users.birthday) as birthday
             FROM Users
             INNER JOIN UsersChats ON Users.id = UsersChats.userId
-            WHERE UsersChats.chatId = ?;
+            WHERE UsersChats.chatId = ?
+            ORDER BY strftime('%m.%d', Users.birthday) ASC;
         `;
 
         this.database.all<IUser>(sql, [chatId], cb);

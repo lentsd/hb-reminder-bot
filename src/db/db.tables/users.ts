@@ -7,7 +7,7 @@ export interface IUser{
 }
 
 /** Класс для работы с таблицей юзеров */
-export class UsersTable{
+export class UsersTable {
     database: Database;
 
     constructor(database: Database){
@@ -25,7 +25,7 @@ export class UsersTable{
         );`;
     
         database.run(sql, (err) => {
-            if(err) {
+            if (err) {
                 throw new Error(err.message);
             }
         });
